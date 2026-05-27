@@ -3,6 +3,7 @@ package com.example.demo.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import com.example.demo.repository.MemberRepository;
 public class MemberService {
 	
 	@Autowired
-	MemberRepository memberRepository;
+	private MemberRepository memberRepository;
 	
 	/**
 	 * DBから取得した全メンバーリストをDto型で返す
@@ -40,13 +41,14 @@ public class MemberService {
 	
 	
 	/**
-	 * IDを指定してメンバーを取得し、リストで返す
+	 * IDを指定してメンバーを取得し、Dto型で返す
 	 * @param memberId
-	 * @return
+	 * @return MemberDto
 	 * @throws NoSuchElementException
 	 */
-	public MemberDto findById(String memberId) throws NoSuchElementException {
+	public MemberDto findById(String memberId) {
 		
+		/*
 		// IDに該当するメンバーデータを取得
 		Optional<MemberEntity> op = memberRepository.findById(memberId);
 		
@@ -61,7 +63,24 @@ public class MemberService {
 		
 		// Dtoデータを返す
 		return memberDto;
+		*/
 		
+		
+		// ↓登録画面作成の際に修正予定↓
+		
+		// DBからIDに該当するメンバーをオプショナル型で取得
+		Optional<MemberEntity> op = memberRepository.findById(memberId);
+		
+		// opがnullであればnullを格納、nullでなければ値を取り出す
+		MemberEntity memberEntity = op.orElse(null);
+		
+		// EntityがNullの場合、nullを返す
+		if(Objects.isNull(memberEntity)) {
+			return null;
+		}
+		
+		// Nullでない場合、EntityからDtoに変換して返す
+		return memberEntity.fromEntitytoDto();
 	}
 	
 	
