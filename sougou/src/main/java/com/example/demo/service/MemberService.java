@@ -3,8 +3,6 @@ package com.example.demo.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Objects;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,9 +28,9 @@ public class MemberService {
 		List<MemberDto> dtoList = new ArrayList<MemberDto>();
 		
 		// DBから取得したEntityリストを全てDtoに変換
-		List<MemberEntity> memberList = memberRepository.findAll();
+		List<MemberEntity> entityList = memberRepository.findAll();
 		
-		memberList.stream().forEach(data -> {
+		entityList.stream().forEach(data -> {
 			dtoList.add(data.fromEntitytoDto());
 		});
 		
@@ -48,39 +46,9 @@ public class MemberService {
 	 */
 	public MemberDto findById(String memberId) {
 		
-		/*
-		// IDに該当するメンバーデータを取得
-		Optional<MemberEntity> op = memberRepository.findById(memberId);
+		// 該当するメンバー情報を取得する処理
 		
-		// Optional型データの中身がnullだった場合、例外を投げる
-		if(!op.isPresent()) {
-			throw new NoSuchElementException("メンバーが見つかりませんでした。");
-		}
-		
-		// データが存在する場合、Optionalからデータを取り出してDtoに変換する
-		MemberEntity member = op.get();
-		MemberDto memberDto = member.fromEntitytoDto();
-		
-		// Dtoデータを返す
-		return memberDto;
-		*/
-		
-		
-		// ↓登録画面作成の際に修正予定↓
-		
-		// DBからIDに該当するメンバーをオプショナル型で取得
-		Optional<MemberEntity> op = memberRepository.findById(memberId);
-		
-		// opがnullであればnullを格納、nullでなければ値を取り出す
-		MemberEntity memberEntity = op.orElse(null);
-		
-		// EntityがNullの場合、nullを返す
-		if(Objects.isNull(memberEntity)) {
-			return null;
-		}
-		
-		// Nullでない場合、EntityからDtoに変換して返す
-		return memberEntity.fromEntitytoDto();
+		return null;
 	}
 	
 	
@@ -99,4 +67,15 @@ public class MemberService {
 		
 		return formList;
 	}
+	
+	/**
+	 * 引数に与えられたDtoをFormに変換し、DB登録
+	 * @author koki_shinzato
+	 * 
+	 * @param memberDto
+	 */
+	public void regist(MemberDto memberDto) {
+		memberRepository.save(memberDto.toEntity());
+	}
+	
 }

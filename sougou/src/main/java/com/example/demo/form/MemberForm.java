@@ -1,5 +1,12 @@
 package com.example.demo.form;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Range;
+
+import com.example.demo.dto.MemberDto;
+
 /**
  * Beanクラス
  * @author  RJC Human Resources
@@ -7,19 +14,28 @@ package com.example.demo.form;
 public class MemberForm{
 
 	/** ID */
+	@NotBlank
 	private String memberId;
+	
 	/** 名前 */
+	@NotBlank
 	private String name;
+	
 	/** 年齢 */
+	@Range(max=200, min=0)
 	private String age;
+	
 	/** 住所 */
 	private String address;
 	/** 性別 */
 	private String sex;
 	/** mail */
 	private String mail;
+	
 	/** 電話番号 */
+	@NotNull
 	private String tel;
+	
 	/** 役職id */
 	private String positionId;
 	/** 役職名 */
@@ -198,6 +214,32 @@ public class MemberForm{
 	 */
 	public void setRegist(String regist) {
 	    this.regist = regist;
+	}
+	
+	/**
+	 * Form → Dto変換
+	 * @author koki_shinzato
+	 * @return Dto型メンバーデータ
+	 */
+	public MemberDto toDto() {
+		
+		MemberDto memberDto = new MemberDto();
+		
+		memberDto.setMemberId(memberId);
+		memberDto.setName(name);
+		memberDto.setAddress(address);
+		memberDto.setAge(age);
+		memberDto.setMail(mail);
+		memberDto.setPlaceId(placeId);
+		memberDto.setPlaceName(placeName);
+		memberDto.setPositionId(positionId);
+		memberDto.setPositionName(positionName);
+		memberDto.setRegist(regist);
+		memberDto.setSex(sex);
+		memberDto.setTel(tel);
+		
+		return memberDto;
+		
 	}
 
 }
