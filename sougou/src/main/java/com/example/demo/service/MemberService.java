@@ -77,4 +77,14 @@ public class MemberService {
 		memberRepository.save(memberDto.toEntity());
 	}
 	
+	/**
+	 * IDで指定したメンバーデータを削除する
+	 * @author koki_shinzato
+	 * 
+	 * @param memberId メンバーID
+	 */
+	public void deleteById(String memberId) {
+		memberRepository.deleteById(memberId);
+	}
+	
 }

@@ -196,4 +196,77 @@ public class MemberController {
 		
 	}
 	
+	/**
+	 * 一覧画面で削除ボタン押下 → 削除画面に遷移
+	 * @author koki_shinzato
+	 * 
+	 * @param memberId
+	 * @param model
+	 * @return 削除画面
+	 */
+	@GetMapping("/delete")
+	public String delete(@RequestParam("memberId") String memberId, Model model) {
+		
+		// メンバーデータ取得
+		MemberDto memberDto = memberService.findById(memberId);
+		
+		// データ無し
+		if(Objects.isNull(memberDto)) {
+			model.addAttribute("error", "該当するメンバーデータが見つかりませんでした");
+			
+			// エラー画面遷移
+			return "menu/error";
+		}
+		
+		// 取得したデータをViewへ渡す
+		model.addAttribute("member", memberDto.fromDtoToForm());
+		
+		// 削除画面へ遷移
+		return "delete/delete";
+	}
+	
+	/**
+	 * 削除画面の削除ボタンを押下 → ユーザーIDをパラメーターに付与してリダイレクト
+	 * @author koki_shinzato
+	 * 
+	 * @param memberForm
+	 * @param redirectAttributes
+	 * @return リダイレクト先メソッド
+	 */
+	@PostMapping("/deleteComp")
+	public String deleteComp(@ModelAttribute("member") MemberForm memberForm, RedirectAttributes redirectAttributes) {
+		
+		redirectAttributes.addAttribute("memberId", memberForm.getMemberId());
+		
+		return "redirect:/deleteCompRedir";
+	}
+	
+	/**
+	 * DB削除処理 → 削除完了画面が表示される
+	 * @author koki_shinzato
+	 * 
+	 * @param memberId
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/deleteCompRedir")
+	public String deleteCompRedir(@RequestParam("memberId") String memberId, Model model) {
+		
+		// 削除対象データを取得
+		MemberDto memberDto = memberService.findById(memberId);
+		
+		if(Objects.isNull(memberDto)) {
+			model.addAttribute("error", "既にメンバーデータが存在しません");
+			
+			return "menu/error";
+		}
+		
+		// DB削除処理
+		memberService.deleteById(memberId);
+		
+		// 削除完了画面 表示用
+		model.addAttribute("member", memberDto.fromDtoToForm());
+		
+		return "delete/deleteComp";
+	}
 }
