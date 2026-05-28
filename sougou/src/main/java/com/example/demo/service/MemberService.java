@@ -68,7 +68,7 @@ public class MemberService {
 	}
 	
 	/**
-	 * 引数に与えられたDtoをFormに変換し、DB登録
+	 * 引数に与えられたDtoをEntityに変換し、DB登録
 	 * @author koki_shinzato
 	 * 
 	 * @param memberDto
@@ -85,6 +85,16 @@ public class MemberService {
 	 */
 	public void deleteById(String memberId) {
 		memberRepository.deleteById(memberId);
+	}
+	
+	/**
+	 * 引数に与えられたDtoをEntityに変換し、DB更新
+	 * @author koki_shinzato
+	 * 
+	 * @param memberDto
+	 */
+	public void update(MemberDto memberDto) {
+		memberRepository.save(memberDto.toEntity());
 	}
 	
 }

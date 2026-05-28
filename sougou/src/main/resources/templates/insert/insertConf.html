@@ -40,7 +40,7 @@
 					<tr>
 						<th>性別</th>
 						<td>
-							<span th:text="*{sex}"></span>
+							<span th:text="*{sex} == 0 ? '男' : '女'"></span>
 							<input type="hidden" th:field="*{sex}">
 						</td>
 					</tr>

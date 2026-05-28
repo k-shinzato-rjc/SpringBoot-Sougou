@@ -32,7 +32,7 @@
 					<td th:text="*{memberId}"></td>
 					<td th:text="*{name}"></td>
 					<td th:text="*{age}"></td>
-					<td th:text="*{sex}"></td>
+					<td th:text="*{sex} == 0 ? '男' : '女'"></td>
 					<td th:text="*{address}"></td>
 					<td th:text="*{tel}"></td>
 					<td th:text="*{mail}"></td>
@@ -40,20 +40,20 @@
 					<td th:text="*{placeName}"></td>
 					<td>
 						<form th:action="@{/detail}" method="get">
-							<input type="submit" value="詳細">
 							<input type="hidden" name="memberId" th:value="*{memberId}">
+							<input type="submit" value="詳細">
 						</form>
 					</td>
 					<td>
 						<form th:action="@{/update}" method="get">
-							<input type="submit" value="更新">
 							<input type="hidden" name="memberId" th:value="*{memberId}">
+							<input type="submit" value="更新">
 						</form>
 					</td>
 					<td>
 						<form th:action="@{/delete}" method="get">
-							<input type="submit" value="削除">
 							<input type="hidden" name="memberId" th:value="*{memberId}">
+							<input type="submit" value="削除">
 						</form>
 					</td>
 				</tr>

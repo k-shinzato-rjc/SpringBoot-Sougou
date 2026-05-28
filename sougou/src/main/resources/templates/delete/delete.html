@@ -41,7 +41,7 @@
 					<tr>
 						<th>性別</th>
 						<td>
-							<span th:text="*{sex}"></span>
+							<span th:text="*{sex} == 0 ? '男' : '女'"></span>
 							<input type="hidden" name="sex" th:value="*{sex}">
 						</td>
 					</tr>
@@ -84,7 +84,7 @@
 				<div class="menu">
 					<input type="submit" value="削除">
 					&nbsp;&nbsp;&nbsp;&nbsp
-					<input type="submit" th:formaction="@{/list}" value="戻る">
+					<input type="submit" th:formaction="@{/backList}" value="戻る">
 				</div>
 			</form>
 		</div>
