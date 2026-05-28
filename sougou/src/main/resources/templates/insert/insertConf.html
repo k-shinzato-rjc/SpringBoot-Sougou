@@ -14,49 +14,76 @@
 				<h2>新規登録&nbsp;確認画面</h2>
 				<p>以下のデータを登録します&nbsp;よろしいですか</p>
 			</div>
-			<form action="./insertComp.html" method="post">
+			<form th:action="@{/insertComp}" method="post" th:object="${member}">
 				<table class="ct">
 					<tr>
 						<th>社員ID</th>
-						<td>ME00000001</td>
+						<td>
+							<span th:text="*{memberId}"></span>
+							<input type="hidden" th:field="*{memberId}">
+						</td>
 					</tr>
 					<tr>
 						<th>氏名</th>
-						<td>社員 A</td>
+						<td>
+							<span th:text="*{name}"></span>
+							<input type="hidden" th:field="*{name}">
+						</td>
 					</tr>
 					<tr>
 						<th>年齢</th>
-						<td>25</td>
+						<td>
+							<span th:text="*{age}"></span>
+							<input type="hidden" th:field="*{age}">
+						</td>
 					</tr>
 					<tr>
 						<th>性別</th>
-						<td>男</td>
+						<td>
+							<span th:text="*{sex}"></span>
+							<input type="hidden" th:field="*{sex}">
+						</td>
 					</tr>
 					<tr>
 						<th>住所</th>
-						<td>東京都</td>
+						<td>
+							<span th:text="*{address}"></span>
+							<input type="hidden" th:field="*{address}">
+						</td>
 					</tr>
 					<tr>
 						<th>電話番号</th>
-						<td>00-0000-0000</td>
+						<td>
+							<span th:text="*{tel}"></span>
+							<input type="hidden" th:field="*{tel}">
+						</td>
 					</tr>
 					<tr>
 						<th>メールアドレス</th>
-						<td>xxx@xxx.xx</td>
+						<td>
+							<span th:text="*{mail}"></span>
+							<input type="hidden" th:field="*{mail}">
+						</td>
 					</tr>
 					<tr>
 						<th>役職</th>
-						<td>一般社員</td>
+						<td>
+							<span th:text="*{positionName}"></span>
+							<input type="hidden" th:field="*{positionName}">
+						</td>
 					</tr>
 					<tr>
 						<th>事業所</th>
-						<td>東京本社</td>
+						<td>
+							<span th:text="*{placeName}"></span>
+							<input type="hidden" th:field="*{placeName}">
+						</td>
 					</tr>
 				</table>
 				<div class="menu">
 					<input type="submit" value="登録">
 					&nbsp;&nbsp;&nbsp;&nbsp
-					<input type="submit" formaction="./insert.html" value="戻る">
+					<input type="submit" th:formaction="@{/insert}" value="戻る">
 				</form>
 				</div>
 			</form>

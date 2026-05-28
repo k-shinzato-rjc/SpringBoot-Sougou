@@ -8,65 +8,67 @@
 	<body>
 		<div id="wapper">
 			<div class="menu">
-				<a th:href="@{/first}">メニュー</a><br>
+				<a th:href="@{/}">メニュー</a><br>
 			</div>
 			<div class="menu">
 				<h2>新規登録画面</h2>
 			</div>
-			<form action="./insertConf.html" method="post">
+			<form th:action="@{/insertConf}" method="post" th:object="${form}">
 				<table class="ct">
 					<tr>
 						<th>社員ID</th>
-						<td><input type="text" name="id" value=""></td>
+						<td><input type="text" th:field="*{memberId}"></td>
 					</tr>
 					<tr>
 						<th>氏名</th>
-						<td><input type="text" name="name" value=""></td>
+						<td><input type="text" th:field="*{name}"></td>
 					</tr>
 					<tr>
 						<th>年齢</th>
-						<td><input type="text" name="age" value=""></td>
+						<td><input type="text" th:field="*{age}"></td>
 					</tr>
 					<tr>
 						<th>性別</th>
 						<td>
-							男<input type="radio" name="sexFlg" value="0" checked >
-							女<input type="radio" name="sexFlg" value="1">
+							男<input type="radio" th:field="*{sex}" value="0" checked >
+							女<input type="radio" th:field="*{sex}" value="1">
 						</td>
 					</tr>
 					<tr>
 						<th>住所</th>
-						<td><input type="text" name="address" value=""></td>
+						<td><input type="text" th:field="*{address}"></td>
 					</tr>
 					<tr>
 						<th>電話番号</th>
-						<td><input type="text" name="tel" value=""></td>
+						<td><input type="text" th:field="*{tel}"></td>
 					</tr>
 					<tr>
 						<th>メールアドレス</th>
-						<td><input type="text" name="mail" value=""></td>
+						<td><input type="text" th:field="*{mail}"></td>
 					</tr>
 					<tr>
 						<th>役職</th>
 						<td>
-							<select name="positionId">
-								<option value="">社長</option>
-								<option value="">部長</option>
-								<option value="">課長</option>
-								<option value="">一般社員</option>
-								<option value="">アルバイト</option>
+							<select th:field="*{positionName}">
+								<option value="">選択してください</option>
+								<option 
+									th:each="position : ${positions}"
+									th:text="${position.positionName}"
+									th:value="${position.positionName}">
+								</option>
 							</select>
 						</td>
 					</tr>
 					<tr>
 						<th>事業所</th>
 						<td>
-							<select name="placeId">
-								<option value="">東京本社</option>
-								<option value="">大阪支社</option>
-								<option value="">福岡支社</option>
-								<option value="">岡山支社</option>
-								<option value="">熊本支社</option>
+							<select th:field="*{placeName}">
+								<option value="">選択してください</option>
+								<option
+									th:each="place : ${places}"
+									th:text="${place.placeName}"
+									th:value="${place.placeName}">
+								</option>
 							</select>
 						</td>
 					</tr>

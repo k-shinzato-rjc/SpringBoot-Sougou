@@ -8,7 +8,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.example.demo.dto.MemberDto;
+import com.example.demo.dto.PlaceDto;
+import com.example.demo.dto.PositionDto;
+import com.example.demo.form.MemberForm;
 import com.example.demo.service.MemberService;
+import com.example.demo.service.PlaceService;
+import com.example.demo.service.PositionService;
 
 /**
  * Menu画面の管理するコントローラー
@@ -19,6 +24,12 @@ public class MenuController {
 	
 	@Autowired
 	private MemberService memberService;
+	
+	@Autowired
+	private PositionService positionService;
+	
+	@Autowired
+	private PlaceService placeService;
 	
 	/**
 	 * 初期メニュー画面の表示
@@ -36,10 +47,20 @@ public class MenuController {
 	 * @return 新規登録画面
 	 */
 	@GetMapping("/insert")
-	public String insert() {
+	public String insert(Model model) {
 		
-		// DBから役職と事業所のリストを取得
+		// 入力欄紐づけ用
+		model.addAttribute("form", new MemberForm());
 		
+		// 役職一覧をDtoで取得し、Formに変換してViewへ渡す
+		List<PositionDto> dtoPositionList = positionService.findAll();
+		model.addAttribute("positions", positionService.convertToForm(dtoPositionList));
+		
+		// 事業所一覧をDtoで取得し、Formに変換してViewへ渡す
+		List<PlaceDto> dtoPlaceList = placeService.findAll();
+		model.addAttribute("places", placeService.convertToForm(dtoPlaceList));
+		
+		// insert.htmlへ遷移
 		return "insert/insert";
 		
 	}
@@ -52,7 +73,7 @@ public class MenuController {
 	@GetMapping("/list")
 	public String list(Model model) {
 		
-		// DBからデータを取得
+		// DBからメンバーデータを取得
 		List<MemberDto> memberDto = memberService.findAll();
 		
 		// Formに変換してViewへ渡す

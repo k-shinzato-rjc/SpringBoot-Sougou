@@ -1,5 +1,6 @@
 package com.example.demo.dto;
 
+import com.example.demo.entity.MemberEntity;
 import com.example.demo.form.MemberForm;
 
 /**
@@ -223,6 +224,32 @@ public class MemberDto{
 		memberForm.setRegist(regist);
 		
 		return memberForm;
+	}
+	
+	/**
+	 * Dto → Entity 変換
+	 * @author koki_shinzato
+	 * @return Entity型メンバーデータ
+	 */
+	public MemberEntity toEntity() {
+		
+		MemberEntity memberEntity = new MemberEntity();
+		
+		memberEntity.setMemberId(memberId);
+		memberEntity.setName(name);
+		memberEntity.setAddress(address);
+		memberEntity.setAge(age);
+		memberEntity.setMail(mail);
+		memberEntity.setPlaceId(placeId);
+		memberEntity.setPlaceName(placeName);
+		memberEntity.setPositionId(positionId);
+		memberEntity.setPositionName(positionName);
+		memberEntity.setRegist(regist);
+		memberEntity.setSex(sex);
+		memberEntity.setTel(tel);
+		
+		return memberEntity;
+		
 	}
 
 }
