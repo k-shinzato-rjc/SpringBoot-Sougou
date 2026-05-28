@@ -165,4 +165,35 @@ public class MemberController {
 		// 登録完了画面へ遷移
 		return "insert/insertComp";
 	}
+	
+	/**
+	 * メンバー一覧画面 → 詳細画面へ遷移
+	 * @author koki_shinzato
+	 * 
+	 * @param memberId
+	 * @param model
+	 * @return 詳細画面
+	 */
+	@GetMapping("/detail")
+	public String detail(@RequestParam("memberId") String memberId, Model model) {
+		
+		// リクエストパラメーターのmemberIdを用いて、メンバー情報を取得
+		MemberDto memberDto = memberService.findById(memberId);
+		
+		// メンバー情報が存在しない場合
+		if(Objects.isNull(memberDto)) {
+			model.addAttribute("error", "IDに該当するメンバーが存在しませんでした");
+			
+			// エラー画面に遷移
+			return "menu/error";
+		}
+		
+		// Form型データをViewへ渡す
+		model.addAttribute("member", memberDto.fromDtoToForm());
+		
+		// 詳細画面へ遷移
+		return "detail/detail";
+		
+	}
+	
 }
