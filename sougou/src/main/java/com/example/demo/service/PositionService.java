@@ -16,7 +16,7 @@ public class PositionService {
 	@Autowired
 	private PositionRepository positionRepository;
 	
-	public List<PositionDto> getAll(){
+	public List<PositionDto> findAll(){
 		
 		ArrayList<PositionDto> list = new ArrayList<PositionDto>();
 		
@@ -27,7 +27,7 @@ public class PositionService {
 		return list;
 	}
 	
-	public List<PositionForm> convertForm(List<PositionDto> dtoList){
+	public List<PositionForm> convertToForm(List<PositionDto> dtoList){
 		
 		List<PositionForm> formList = new ArrayList<PositionForm>();
 		dtoList.stream().forEach(dto -> {

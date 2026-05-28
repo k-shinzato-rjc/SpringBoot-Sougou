@@ -53,12 +53,12 @@ public class MenuController {
 		model.addAttribute("form", new MemberForm());
 		
 		// 役職一覧をDtoで取得し、Formに変換してViewへ渡す
-		List<PositionDto> dtoPositionList = positionService.getAll();
-		model.addAttribute("positions", positionService.convertForm(dtoPositionList));
+		List<PositionDto> dtoPositionList = positionService.findAll();
+		model.addAttribute("positions", positionService.convertToForm(dtoPositionList));
 		
 		// 事業所一覧をDtoで取得し、Formに変換してViewへ渡す
-		List<PlaceDto> dtoPlaceList = placeService.getAll();
-		model.addAttribute("places", placeService.convertForm(dtoPlaceList));
+		List<PlaceDto> dtoPlaceList = placeService.findAll();
+		model.addAttribute("places", placeService.convertToForm(dtoPlaceList));
 		
 		// insert.htmlへ遷移
 		return "insert/insert";

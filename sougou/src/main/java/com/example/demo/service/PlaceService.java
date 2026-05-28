@@ -24,7 +24,7 @@ public class PlaceService {
 	 * DBから事業所リストを取得し、Entity→ Dtoに変換して返す
 	 * @return
 	 */
-	public List<PlaceDto> getAll(){
+	public List<PlaceDto> findAll(){
 		
 		List<PlaceDto> dtoList = new ArrayList<PlaceDto>();
 		
@@ -43,7 +43,7 @@ public class PlaceService {
 	 * @param dtoList
 	 * @return Form型 事業所データ
 	 */
-	public List<PlaceForm> convertForm(List<PlaceDto> dtoList){
+	public List<PlaceForm> convertToForm(List<PlaceDto> dtoList){
 		List<PlaceForm> formList = new ArrayList<PlaceForm>();
 		
 		dtoList.stream().forEach(dto -> {

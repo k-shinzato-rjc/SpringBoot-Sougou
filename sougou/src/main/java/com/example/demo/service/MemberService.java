@@ -74,7 +74,7 @@ public class MemberService {
 	 * 
 	 * @param memberDto
 	 */
-	public void regist(MemberDto memberDto) {
+	public void save(MemberDto memberDto) {
 		memberRepository.save(memberDto.toEntity());
 	}
 	
