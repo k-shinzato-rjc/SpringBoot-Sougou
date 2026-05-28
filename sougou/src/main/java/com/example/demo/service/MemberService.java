@@ -46,9 +46,8 @@ public class MemberService {
 	 */
 	public MemberDto findById(String memberId) {
 		
-		// 該当するメンバー情報を取得する処理
-		
-		return null;
+		// IDに該当するメンバーデータ(Optional<Entity>) → Optional<Dto> → Dto
+		return memberRepository.findById(memberId).map(opEntity -> opEntity.fromEntitytoDto()).orElse(null);
 	}
 	
 	
