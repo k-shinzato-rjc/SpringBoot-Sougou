@@ -220,7 +220,9 @@ public class MemberDto{
 		memberForm.setTel(tel);
 		memberForm.setMail(mail);
 		memberForm.setPositionId(positionId);
+		memberForm.setPositionName(positionName);
 		memberForm.setPlaceId(placeId);
+		memberForm.setPlaceName(placeName);
 		memberForm.setRegist(regist);
 		
 		return memberForm;
@@ -237,16 +239,16 @@ public class MemberDto{
 		
 		memberEntity.setMemberId(memberId);
 		memberEntity.setName(name);
-		memberEntity.setAddress(address);
 		memberEntity.setAge(age);
+		memberEntity.setSex(sex);
+		memberEntity.setAddress(address);
+		memberEntity.setTel(tel);
 		memberEntity.setMail(mail);
-		memberEntity.setPlaceId(placeId);
-		memberEntity.setPlaceName(placeName);
 		memberEntity.setPositionId(positionId);
 		memberEntity.setPositionName(positionName);
+		memberEntity.setPlaceId(placeId);
+		memberEntity.setPlaceName(placeName);
 		memberEntity.setRegist(regist);
-		memberEntity.setSex(sex);
-		memberEntity.setTel(tel);
 		
 		return memberEntity;
 		

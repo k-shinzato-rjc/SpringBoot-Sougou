@@ -39,19 +39,19 @@
 					<td th:text="*{positionName}"></td>
 					<td th:text="*{placeName}"></td>
 					<td>
-						<form th:action="@{/detail}" method="get">
+						<form th:action="@{/detail}" method="post">
 							<input type="hidden" name="memberId" th:value="*{memberId}">
 							<input type="submit" value="詳細">
 						</form>
 					</td>
 					<td>
-						<form th:action="@{/update}" method="get">
+						<form th:action="@{/update}" method="post">
 							<input type="hidden" name="memberId" th:value="*{memberId}">
 							<input type="submit" value="更新">
 						</form>
 					</td>
 					<td>
-						<form th:action="@{/delete}" method="get">
+						<form th:action="@{/delete}" method="post">
 							<input type="hidden" name="memberId" th:value="*{memberId}">
 							<input type="submit" value="削除">
 						</form>

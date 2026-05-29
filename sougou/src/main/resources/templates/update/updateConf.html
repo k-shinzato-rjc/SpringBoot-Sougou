@@ -23,73 +23,72 @@
 					<th>社員ID</th>
 					<td>
 						<span th:text="*{memberId}"></span>
-						<input type="hidden" name="memberId" th:value="*{memberId}">
+						<input type="hidden" th:field="*{memberId}">
 					</td>
 				</tr>
 				<tr>
 					<th>氏名</th>
 					<td>
 						<span th:text="*{name}"></span>
-						<input type="hidden" name="name" th:value="*{name}">
+						<input type="hidden" th:field="*{name}">
 					</td>
 				</tr>
 				<tr>
 					<th>年齢</th>
 					<td>
 						<span th:text="*{age}"></span>
-						<input type="hidden" name="age" th:value="*{age}">
+						<input type="hidden" th:field="*{age}">
 					</td>
 				</tr>
 				<tr>
 					<th>性別</th>
 					<td>
 						<span th:text="*{sex}"></span>
-						<input type="hidden" name="sex" th:value="*{sex}">
+						<input type="hidden" th:field="*{sex}">
 					</td>
 				</tr>
 				<tr>
 					<th>住所</th>
 					<td>
 						<span th:text="*{address}"></span>
-						<input type="hidden" name="address" th:value="*{address}">
+						<input type="hidden" th:field="*{address}">
 					</td>
 				</tr>
 				<tr>
 					<th>電話番号</th>
 					<td>
 						<span th:text="*{tel}"></span>
-						<input type="hidden" name="tel" th:value="*{tel}">
+						<input type="hidden" th:field="*{tel}">
 					</td>
 				</tr>
 				<tr>
 					<th>メールアドレス</th>
 					<td>
 						<span th:text="*{mail}"></span>
-						<input type="hidden" name="mail" th:value="*{mail}">
+						<input type="hidden" th:field="*{mail}">
 					</td>
 				</tr>
 				<tr>
 					<th>役職</th>
 					<td>
 						<span th:text="*{positionName}"></span>
-						<input type="hidden" name="positionName" th:value="*{positionName}">
+						<input type="hidden" th:field="*{positionName}">
 					</td>
 				</tr>
 				<tr>
 					<th>事業所</th>
 					<td>
 						<span th:text="*{placeName}"></span>
-						<input type="hidden" name="placeName" th:value="*{placeName}">
+						<input type="hidden" th:field="*{placeName}">
 					</td>
 				</tr>
 			</table>
 			<div class="menu">
 				<input type="submit" value="更新">
 				&nbsp;&nbsp;&nbsp;&nbsp
-				<input type="submit" th:formaction="@{/update}" value="戻る">
+				<input type="submit" th:formaction="@{/backUpdate}" value="戻る">
+			</div>
 		</form>
-	</div>
-	</form>
 	</div>
 </body>
 

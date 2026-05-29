@@ -87,14 +87,4 @@ public class MemberService {
 		memberRepository.deleteById(memberId);
 	}
 	
-	/**
-	 * 引数に与えられたDtoをEntityに変換し、DB更新
-	 * @author koki_shinzato
-	 * 
-	 * @param memberDto
-	 */
-	public void update(MemberDto memberDto) {
-		memberRepository.save(memberDto.toEntity());
-	}
-	
 }

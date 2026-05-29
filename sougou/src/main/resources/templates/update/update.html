@@ -61,16 +61,24 @@
 					<tr>
 						<th>役職</th>
 						<td>
-							<select>
-								<option th:each="position : ${positions}" th:object="${position}" th:name="*{positionName}" th:text="*{positionName}"></option>
+							<select th:field="*{positionName}">
+								<option 
+									th:each="position : ${positions}"
+									th:text="${position.positionName}"
+									th:value="${position.positionName}">
+								</option>
 							</select>
 						</td>
 					</tr>
 					<tr>
 						<th>事業所</th>
 						<td>
-							<select>
-								<option th:each="place : ${places}" th:object="${place}" th:name="*{placeName}" th:text="*{placeName}"></option>
+							<select th:field="*{placeName}">
+								<option 
+									th:each="place : ${places}"
+									th:text="${place.placeName}"
+									th:value="${place.placeName}">
+								</option>
 							</select>
 						</td>
 					</tr>

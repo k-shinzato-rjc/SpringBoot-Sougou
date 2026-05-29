@@ -135,7 +135,7 @@ public class MemberController {
 	 * @param model
 	 * @return 詳細画面
 	 */
-	@GetMapping("/detail")
+	@PostMapping("/detail")
 	public String detail(@RequestParam("memberId") String memberId, Model model) {
 		
 		// リクエストパラメーターのmemberIdを用いて、メンバー情報を取得
@@ -239,7 +239,7 @@ public class MemberController {
 	 * @param model
 	 * @return 更新画面
 	 */
-	@GetMapping("/update")
+	@PostMapping("/update")
 	public String update(@RequestParam("memberId") String memberId, Model model) {
 		
 		// メンバーデータ取得
@@ -274,8 +274,8 @@ public class MemberController {
 	 * @param model
 	 * @return 更新画面
 	 */
-	@PostMapping("/update")
-	public String update(@ModelAttribute("member") MemberForm memberForm, Model model) {
+	@PostMapping("/backUpdate")
+	public String backUpdate(@ModelAttribute("member") MemberForm memberForm, Model model) {
 		
 		// 該当するメンバーデータをFormに変換してViewへ渡す
 		model.addAttribute("member", memberForm);
@@ -299,7 +299,14 @@ public class MemberController {
 	 * @return 更新確認画面
 	 */
 	@PostMapping("/updateConf")
-	public String updateConf(@ModelAttribute("member") MemberForm memberForm, Model model) {
+	public String updateConf(@Valid @ModelAttribute("member") MemberForm memberForm, BindingResult result, Model model) {
+		
+		// 入力チェック
+		if(result.hasErrors()) {
+			model.addAttribute("error", "入力内容に不備があります。");
+			
+			return "menu/error";
+		}
 		
 		// 入力内容をViewへ再び渡す
 		model.addAttribute("member", memberForm);
@@ -317,16 +324,13 @@ public class MemberController {
 	 * @return リダイレクト先
 	 */
 	@PostMapping("/updateComp")
-	public String updateComp(@Valid @ModelAttribute("member") MemberForm memberForm, BindingResult result, RedirectAttributes redirectAttributes, Model model) {
+	public String updateComp(@ModelAttribute("member") MemberForm memberForm, RedirectAttributes redirectAttributes, Model model) {
 		
-		if(result.hasErrors()) {
-			model.addAttribute("error", "入力内容に不備があります。");
-			
-			return "menu/error";
-		}
+		// DB更新
+		memberService.save(memberForm.toDto());
 		
-		// Formオブジェクトをリダイレクトで転送
-		redirectAttributes.addFlashAttribute("member", memberForm);
+		// 登録データのIDをリダイレクトパラメーターに付与して転送
+		redirectAttributes.addAttribute("memberId", memberForm.getMemberId());
 		
 		// リダイレクト
 		return "redirect:/updateCompRedir";
@@ -340,20 +344,20 @@ public class MemberController {
 	 * @return 更新完了画面
 	 */
 	@GetMapping("/updateCompRedir")
-	public String updateCompRedir(Model model) {
+	public String updateCompRedir(@RequestParam("memberId") String memberId, Model model) {
+		
+		// リダイレクトされたIDを用いて、DBから登録されたデータを取得
+		MemberDto memberDto = memberService.findById(memberId);
 		
 		// 完了画面更新時などの対応
-		if(!model.containsAttribute("member")) {
-			model.addAttribute("error", "最初から更新処理をやり直してください");
+		if(Objects.isNull(memberDto)) {
+			model.addAttribute("error", "DB更新が正常に完了しませんでした");
 			
 			return "menu/error";
 		}
 		
-		// modelからリダイレクトで転送されたFormオブジェクトを取得
-		MemberForm memberForm = (MemberForm)model.asMap().get("member");
-		
-		// Form → Dto に変換してDB更新
-		memberService.save(memberForm.toDto());
+		// 登録したデータをFormに変換してViewへ渡す
+		model.addAttribute("member", memberDto.fromDtoToForm());
 		
 		// 更新完了画面へ遷移
 		return "update/updateComp";
