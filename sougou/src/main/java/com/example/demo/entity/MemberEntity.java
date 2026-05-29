@@ -240,8 +240,8 @@ public class MemberEntity{
 	 * @return 変換されたDtoデータ
 	 */
 	public MemberDto fromEntitytoDto() {
-		
 		MemberDto memberDto = new MemberDto();
+
 		memberDto.setMemberId(memberId);
 		memberDto.setName(name);
 		memberDto.setAge(age);
@@ -250,7 +250,9 @@ public class MemberEntity{
 		memberDto.setTel(tel);
 		memberDto.setMail(mail);
 		memberDto.setPositionId(positionId);
+		memberDto.setPositionName(positionName);
 		memberDto.setPlaceId(placeId);
+		memberDto.setPlaceName(placeName);
 		memberDto.setRegist(regist);
 		
 		return memberDto;

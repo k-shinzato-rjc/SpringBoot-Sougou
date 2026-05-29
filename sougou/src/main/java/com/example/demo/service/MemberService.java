@@ -68,7 +68,7 @@ public class MemberService {
 	}
 	
 	/**
-	 * 引数に与えられたDtoをFormに変換し、DB登録
+	 * 引数に与えられたDtoをEntityに変換し、DB登録
 	 * @author koki_shinzato
 	 * 
 	 * @param memberDto

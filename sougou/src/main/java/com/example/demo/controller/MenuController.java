@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import com.example.demo.dto.MemberDto;
 import com.example.demo.dto.PlaceDto;
@@ -82,4 +83,23 @@ public class MenuController {
 		// list.htmlに遷移
 		return "list/list";
 	}
+	
+	/**
+	 * 更新画面で戻るボタン押下 → 一覧画面に戻る
+	 * @param model
+	 * @return
+	 */
+	@PostMapping("/list")
+	public String backlist(Model model) {
+		
+		// DBからメンバーデータを取得
+		List<MemberDto> memberDto = memberService.findAll();
+		
+		// Formに変換してViewへ渡す
+		model.addAttribute("members", memberService.convertToForm(memberDto));
+		
+		// list.htmlに遷移
+		return "list/list";
+	}
+	
 }

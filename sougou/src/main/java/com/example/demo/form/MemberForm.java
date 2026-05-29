@@ -227,16 +227,16 @@ public class MemberForm{
 		
 		memberDto.setMemberId(memberId);
 		memberDto.setName(name);
-		memberDto.setAddress(address);
 		memberDto.setAge(age);
+		memberDto.setSex(sex);
+		memberDto.setAddress(address);
+		memberDto.setTel(tel);
 		memberDto.setMail(mail);
-		memberDto.setPlaceId(placeId);
-		memberDto.setPlaceName(placeName);
 		memberDto.setPositionId(positionId);
 		memberDto.setPositionName(positionName);
+		memberDto.setPlaceId(placeId);
+		memberDto.setPlaceName(placeName);
 		memberDto.setRegist(regist);
-		memberDto.setSex(sex);
-		memberDto.setTel(tel);
 		
 		return memberDto;
 		

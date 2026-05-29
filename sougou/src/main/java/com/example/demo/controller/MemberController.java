@@ -38,45 +38,6 @@ public class MemberController {
 	private PositionService positionService;
 	
 	/**
-	 * 実装予定
-	 * @param model
-	 * @return
-	 */
-	@PostMapping("/detail")
-	public String detail(Model model) {
-		
-		// メンバー指定
-		
-		return "detail/detail";
-	}
-	
-	/**
-	 * 実装予定
-	 * @param model
-	 * @return
-	 */
-	@PostMapping("/update")
-	public String update(Model model) {
-		
-		// メンバー指定
-		
-		return "update/update";
-	}
-	
-	/**
-	 * 実装予定
-	 * @param model
-	 * @return
-	 */
-	@PostMapping("/delete")
-	public String delete(Model model) {
-		
-		// メンバー指定
-		
-		return "delete/delete";
-	}
-	
-	/**
 	 * 確認画面で戻るボタン押下 内容を維持しつつ登録画面に遷移
 	 * @author koki_shinzato
 	 * 
@@ -102,7 +63,23 @@ public class MemberController {
 	 * @return 登録確認画面
 	 */
 	@PostMapping("/insertConf")
-	public String insertConf(@ModelAttribute("member") MemberForm form, Model model) {
+	public String insertConf(@Valid @ModelAttribute("member") MemberForm memberForm, BindingResult result, Model model) {
+		
+		// バリデーション結果にエラーがあった場合
+		if(result.hasErrors()) {
+			
+			// エラーメッセージを転送
+			model.addAttribute("error", "入力内容に不備がありました。");
+			
+			// エラー画面へ遷移
+			return "menu/error";
+			
+		}
+		
+		// エラーが無い場合、入力内容をViewへ渡す
+		model.addAttribute("member", memberForm);
+		
+		// 登録確認画面へ遷移
 		return "insert/insertConf";
 	}
 	
@@ -119,16 +96,6 @@ public class MemberController {
 	@PostMapping("/insertComp")
 	public String insertComp(@Valid @ModelAttribute("member") MemberForm form,
 						BindingResult result, Model model, RedirectAttributes redirectAttributes) {
-		
-		// バリデーション結果にエラーがあった場合
-		if(result.hasErrors()) {
-			
-			// エラーメッセージを転送
-			model.addAttribute("error", "入力内容に不備がありました。");
-			
-			// エラー画面へ遷移
-			return "menu/error";
-		}
 		
 		// FormをDtoに変換し、DB登録
 		memberService.save(form.toDto());
@@ -174,7 +141,7 @@ public class MemberController {
 	 * @param model
 	 * @return 詳細画面
 	 */
-	@GetMapping("/detail")
+	@PostMapping("/detail")
 	public String detail(@RequestParam("memberId") String memberId, Model model) {
 		
 		// リクエストパラメーターのmemberIdを用いて、メンバー情報を取得
@@ -268,5 +235,112 @@ public class MemberController {
 		model.addAttribute("member", memberDto.fromDtoToForm());
 		
 		return "delete/deleteComp";
+	}
+	
+	/**
+	 * 更新画面を表示
+	 * @author koki_shinzato
+	 * 
+	 * @param memberId
+	 * @param model
+	 * @return 更新画面
+	 */
+	@PostMapping("/update")
+	public String update(@ModelAttribute("member") MemberForm memberForm, 
+			 @RequestParam("memberId") String memberId, @RequestParam("displayId") String displayId, Model model) {
+		
+		// 役職情報をViewへ渡す
+		model.addAttribute("positions", positionService.convertToForm(positionService.findAll()));
+		
+		// 事業所情報をViewへ渡す
+		model.addAttribute("places", placeSercice.convertToForm(placeSercice.findAll()));
+		
+		// リクエストパラメーターdisplayIdの値がupdateConfのとき（更新画面から一覧画面に遷移したとき）
+		if("updateConf".equals(displayId)) {
+			
+			// 更新画面に遷移し、バインディングされたFormを表示する
+			return "update/update";
+		}
+		
+		// リクエストパラメーターを基にDBから該当するメンバーデータ取得
+		MemberDto memberDto = memberService.findById(memberId);
+		
+		// Formに変換してViewへ渡す
+		model.addAttribute("member", memberDto.fromDtoToForm());
+		
+		return "update/update";
+	}
+	
+	/**
+	 * 更新画面から更新ボタン押下 → 確認画面へ遷移
+	 * @author koki_shinzato
+	 * 
+	 * @param memberForm
+	 * @param model
+	 * @return 更新確認画面
+	 */
+	@PostMapping("/updateConf")
+	public String updateConf(@Valid @ModelAttribute("member") MemberForm memberForm, BindingResult result, Model model) {
+		
+		// 入力チェック
+		if(result.hasErrors()) {
+			model.addAttribute("error", "入力内容に不備があります。");
+			
+			return "menu/error";
+		}
+		
+		// 入力内容をViewへ再び渡す
+		model.addAttribute("member", memberForm);
+		
+		// 更新確認画面へ遷移
+		return "update/updateConf";
+	}
+	
+	/**
+	 * 更新確認画面で更新ボタン押下 → メンバーIDをリクエストパラメーターに付与してリダイレクト
+	 * @author koki_shinzato
+	 * 
+	 * @param memberForm
+	 * @param redirectAttributes
+	 * @return リダイレクト先
+	 */
+	@PostMapping("/updateComp")
+	public String updateComp(@ModelAttribute("member") MemberForm memberForm, RedirectAttributes redirectAttributes, Model model) {
+		
+		// DB更新
+		memberService.save(memberForm.toDto());
+		
+		// 登録データのIDをリダイレクトパラメーターに付与して転送
+		redirectAttributes.addAttribute("memberId", memberForm.getMemberId());
+		
+		// リダイレクト
+		return "redirect:/updateCompRedir";
+	}
+	
+	/**
+	 * DB更新実施、更新完了画面へ遷移
+	 * @author koki_shinzato
+	 * 
+	 * @param model
+	 * @return 更新完了画面
+	 */
+	@GetMapping("/updateCompRedir")
+	public String updateCompRedir(@RequestParam("memberId") String memberId, Model model) {
+		
+		// リダイレクトされたIDを用いて、DBから登録されたデータを取得
+		MemberDto memberDto = memberService.findById(memberId);
+		
+		// 完了画面更新時などの対応
+		if(Objects.isNull(memberDto)) {
+			model.addAttribute("error", "DB更新が正常に完了しませんでした");
+			
+			return "menu/error";
+		}
+		
+		// 登録したデータをFormに変換してViewへ渡す
+		model.addAttribute("member", memberDto.fromDtoToForm());
+		
+		// 更新完了画面へ遷移
+		return "update/updateComp";
 	}
 }
