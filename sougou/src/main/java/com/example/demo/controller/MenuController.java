@@ -89,8 +89,8 @@ public class MenuController {
 	 * @param model
 	 * @return
 	 */
-	@PostMapping("/backList")
-	public String backList(Model model) {
+	@PostMapping("/list")
+	public String backlist(Model model) {
 		
 		// DBからメンバーデータを取得
 		List<MemberDto> memberDto = memberService.findAll();

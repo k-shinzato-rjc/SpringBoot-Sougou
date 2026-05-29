@@ -63,7 +63,23 @@ public class MemberController {
 	 * @return 登録確認画面
 	 */
 	@PostMapping("/insertConf")
-	public String insertConf(@ModelAttribute("member") MemberForm form, Model model) {
+	public String insertConf(@Valid @ModelAttribute("member") MemberForm memberForm, BindingResult result, Model model) {
+		
+		// バリデーション結果にエラーがあった場合
+		if(result.hasErrors()) {
+			
+			// エラーメッセージを転送
+			model.addAttribute("error", "入力内容に不備がありました。");
+			
+			// エラー画面へ遷移
+			return "menu/error";
+			
+		}
+		
+		// エラーが無い場合、入力内容をViewへ渡す
+		model.addAttribute("member", memberForm);
+		
+		// 登録確認画面へ遷移
 		return "insert/insertConf";
 	}
 	
@@ -80,16 +96,6 @@ public class MemberController {
 	@PostMapping("/insertComp")
 	public String insertComp(@Valid @ModelAttribute("member") MemberForm form,
 						BindingResult result, Model model, RedirectAttributes redirectAttributes) {
-		
-		// バリデーション結果にエラーがあった場合
-		if(result.hasErrors()) {
-			
-			// エラーメッセージを転送
-			model.addAttribute("error", "入力内容に不備がありました。");
-			
-			// エラー画面へ遷移
-			return "menu/error";
-		}
 		
 		// FormをDtoに変換し、DB登録
 		memberService.save(form.toDto());
@@ -232,7 +238,7 @@ public class MemberController {
 	}
 	
 	/**
-	 * 一覧画面から更新ボタンを押下 → 更新画面を表示
+	 * 更新画面を表示
 	 * @author koki_shinzato
 	 * 
 	 * @param memberId
@@ -240,53 +246,30 @@ public class MemberController {
 	 * @return 更新画面
 	 */
 	@PostMapping("/update")
-	public String update(@RequestParam("memberId") String memberId, Model model) {
+	public String update(@ModelAttribute("member") MemberForm memberForm, 
+			 @RequestParam("memberId") String memberId, Model model) {
 		
-		// メンバーデータ取得
-		MemberDto memberDto = memberService.findById(memberId);
+		// 役職情報をViewへ渡す
+		model.addAttribute("positions", positionService.convertToForm(positionService.findAll()));
 		
-		// データが存在しない場合
-		if(Objects.isNull(memberDto)) {
-			model.addAttribute("error", "該当するデータが存在しません");
+		// 事業所情報をViewへ渡す
+		model.addAttribute("places", placeSercice.convertToForm(placeSercice.findAll()));
+		
+		// リクエストパラメーターの値が取得できている場合（一覧画面から更新画面に遷移したとき）
+		if(!memberId.isEmpty()) {
 			
-			// エラー画面遷移
-			return "menu/error";
+			// リクエストパラメーターを基にDBから該当するメンバーデータ取得
+			MemberDto memberDto = memberService.findById(memberId);
+			
+			// Formに変換してViewへ渡す
+			model.addAttribute("member", memberDto.fromDtoToForm());
+			
+			// 更新画面へ遷移
+			return "update/update";
 		}
 		
-		// 該当するメンバーデータをFormに変換してViewへ渡す
-		model.addAttribute("member", memberDto.fromDtoToForm());
-		
-		// 権限情報リスト
-		model.addAttribute("positions", positionService.convertToForm(positionService.findAll()));
-		
-		// 事業所情報リスト
-		model.addAttribute("places", placeSercice.convertToForm(placeSercice.findAll()));
-		
-		// 更新画面へ遷移
-		return "update/update";
-	}
-	
-	/**
-	 * 更新確認画面で戻るボタンを押下 → 入力内容を維持して更新画面に戻る
-	 * @author koki_shinzato
-	 * 
-	 * @param memberId
-	 * @param model
-	 * @return 更新画面
-	 */
-	@PostMapping("/backUpdate")
-	public String backUpdate(@ModelAttribute("member") MemberForm memberForm, Model model) {
-		
-		// 該当するメンバーデータをFormに変換してViewへ渡す
-		model.addAttribute("member", memberForm);
-		
-		// 権限情報リスト
-		model.addAttribute("positions", positionService.convertToForm(positionService.findAll()));
-		
-		// 事業所情報リスト
-		model.addAttribute("places", placeSercice.convertToForm(placeSercice.findAll()));
-		
-		// 更新画面へ遷移
+		// リクエストパラメーターの値が空の場合、更新画面へ遷移（更新確認画面から更新画面へ遷移したとき）
+		// 更新画面に遷移し、バインディングされたFormを表示する
 		return "update/update";
 	}
 	
