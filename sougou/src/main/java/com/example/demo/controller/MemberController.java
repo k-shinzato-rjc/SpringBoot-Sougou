@@ -247,7 +247,7 @@ public class MemberController {
 	 */
 	@PostMapping("/update")
 	public String update(@ModelAttribute("member") MemberForm memberForm, 
-			 @RequestParam("memberId") String memberId, Model model) {
+			 @RequestParam("memberId") String memberId, @RequestParam("displayId") String displayId, Model model) {
 		
 		// 役職情報をViewへ渡す
 		model.addAttribute("positions", positionService.convertToForm(positionService.findAll()));
@@ -255,21 +255,19 @@ public class MemberController {
 		// 事業所情報をViewへ渡す
 		model.addAttribute("places", placeSercice.convertToForm(placeSercice.findAll()));
 		
-		// リクエストパラメーターの値が取得できている場合（一覧画面から更新画面に遷移したとき）
-		if(!memberId.isEmpty()) {
+		// リクエストパラメーターdisplayIdの値がupdateConfのとき（更新画面から一覧画面に遷移したとき）
+		if("updateConf".equals(displayId)) {
 			
-			// リクエストパラメーターを基にDBから該当するメンバーデータ取得
-			MemberDto memberDto = memberService.findById(memberId);
-			
-			// Formに変換してViewへ渡す
-			model.addAttribute("member", memberDto.fromDtoToForm());
-			
-			// 更新画面へ遷移
+			// 更新画面に遷移し、バインディングされたFormを表示する
 			return "update/update";
 		}
 		
-		// リクエストパラメーターの値が空の場合、更新画面へ遷移（更新確認画面から更新画面へ遷移したとき）
-		// 更新画面に遷移し、バインディングされたFormを表示する
+		// リクエストパラメーターを基にDBから該当するメンバーデータ取得
+		MemberDto memberDto = memberService.findById(memberId);
+		
+		// Formに変換してViewへ渡す
+		model.addAttribute("member", memberDto.fromDtoToForm());
+		
 		return "update/update";
 	}
 	

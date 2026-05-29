@@ -47,6 +47,7 @@
 					<td>
 						<form th:action="@{/update}" method="post">
 							<input type="hidden" name="memberId" th:value="*{memberId}">
+							<input type="hidden" name="displayId" value="list">
 							<input type="submit" value="更新">
 						</form>
 					</td>
